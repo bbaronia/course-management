@@ -1,0 +1,33 @@
+.media {
+    padding-bottom: 9px;
+    margin: 5px 0 5px;
+    border-left: 1px dotted #000;
+    border-bottom: 1px dotted #000;
+    margin-bottom: 5px;
+    padding-left: 10px;
+}
+
+.media-heading {
+    padding-bottom: 9px;
+    margin: 5px;
+    font-size: 19px;
+    color: grey;
+}
+
+.media-body {
+    margin: 5px;
+}
+
+.topic {
+    border: 1px dotted #555;
+}
+
+.course-title {
+    margin: 5px;
+    font-size: 1.25rem;
+}
+
+.course-problem-text {
+    margin: 5px;
+    font-size: 1rem;
+}
