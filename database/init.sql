@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS Courses;
 DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users (
-    id int AUTO_INCREMENT NOT NULL,
+    id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
     email varchar(50) NOT NULL,
     firstName varchar(50) NOT NULL,
     lastName varchar(50) NOT NULL,
