@@ -24,6 +24,8 @@
         "nodemon": "^1.17.5",
         "passport": "^0.4.0",
         "passport-local": "^1.0.0",
-        "path": "^0.12.7"
+        "path": "^0.12.7",
+        "sanitize": "^2.1.0",
+        "validator": "^10.2.0"
     }
 }
