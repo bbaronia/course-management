@@ -60,8 +60,26 @@ module.exports = function (app, passport) {
         res.render('teacher', { title: teacherName });
     });
 
+    app.post('/createSection', isTeacher, function(req, res, next) {
+        res.redirect('/teacher');
+    });
+
+    app.post('/addSection', function(req, res, next) {
+        res.redirect('/student');
+    });
+
     app.get('/student', isStudent, function (req, res, next) {
         res.render('student', { title: studentName });
+    });
+
+    app.get('/courses', function (req, res, next) {
+        res.send([{ name: 'Math 101', id: 1}, { name: 'Math 201', id: 2}, {name: 'Math 301', id: 3}]);
+    });
+
+    app.get('/sections/:course', function(req, res, next) {
+        console.log(req.params['course']);
+        var sections = [{ number: 1, description: 'description', quarter: 'Spring', year: 2018, teacher: 'Mr. Teacher', id: 1}, {number: 2, description: 'description', quarter: 'Spring', year: 2019, teacher: 'Ms. Teacher', id: 2}];
+        res.send(sections);
     });
 
     app.get('/student/:course-:section', isStudent, function (req, res, next) {

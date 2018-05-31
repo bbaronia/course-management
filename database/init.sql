@@ -25,7 +25,10 @@ CREATE TABLE Sections (
     sectionID int auto_increment PRIMARY KEY,
     courseID int REFERENCES Courses(courseID),
     owner varchar(50) REFERENCES Users(email),
-    sectionNumber int NOT NULL
+    sectionNumber int NOT NULL,
+    description varchar(100) NOT NULL,
+    quarter ENUM('Spring', 'Summer', 'Fall', 'Winter') NOT NULL,
+    year int NOT NULL
 );
 
 CREATE TABLE Enrollments (

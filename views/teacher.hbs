@@ -25,10 +25,16 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <h class="nav-link disabled">Home</h>
+          <a class="nav-link" href="/teacher">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/teacher/createcourse">Create Course</a>
+        </li>
+        <li>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-link nav-link" data-toggle="modal" data-target="#exampleModalLong">
+            Add Section
+          </button>
         </li>
       </ul>
       <a class="btn btn-outline-danger ml-2" href="/logout" role="button">Logout</a>
@@ -36,9 +42,40 @@
   </nav>
 
   <!-- Course list-->
-  <div class="media">
-    <div class="container">
-      <div id='course-list-0' />
+  <div class="container">
+    <div id='course-list' />
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Add Section</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action='/createSection' method="POST" id="createSectionForm">
+            <div class="form-group">
+              <select name="courseToAddSection" class="form-control" id="class-list">
+
+              </select>
+            </div>
+            <input type="checkbox" id="passcodeEnabled" role="button" data-toggle="collapse" aria-expanded="false" data-target="#passcodeField"
+              aria-controls="passcodeField">
+            <label for="passcodeEnabled">Passcode Enabled</label>
+            <div class="collapse" id="passcodeField">
+              <input type="number" placeholder="Section Passcode" name="passcode" class="form-control" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary" type="button" id="createSectionButton">Add Section</button>
+        </div>
+      </div>
     </div>
   </div>
 
