@@ -7,11 +7,12 @@ DROP TABLE IF EXISTS Courses;
 DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users (
-    email varchar(50) PRIMARY KEY,
+    id int AUTO_INCREMENT NOT NULL,
+    email varchar(50) NOT NULL,
     firstName varchar(50) NOT NULL,
     lastName varchar(50) NOT NULL,
-    passwd varchar(50) NOT NULL,
-    privilegeLevel int NOT NULL
+    passwd varchar(60) NOT NULL,
+    privilegeLevel ENUM('admin', 'teacher', 'student') NOT NULL
 );
 
 CREATE TABLE Courses (
