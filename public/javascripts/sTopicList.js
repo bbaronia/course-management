@@ -38,13 +38,3 @@ var populateResources = function (resources, topic, topicNum) {
         );
     });
 }
-
-
-
-/*
-    <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordion">
-        <div class="card-body">
-            Topic Content
-          <br>
-                <a href="/student/Math 101-01/Topic 1/problem=Problem 1">Problem 1</a>
-        </div>*/

@@ -47,27 +47,37 @@
           <button class="btn btn-link" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
             Topic 1
           </button>
+          <button class="btn btn-link text-danger" data-toggle="modal" data-target="#deleteTopicModal">Delete Topic</button>
+                    <!-- Modal -->
+          <div class="modal fade" id="deleteTopicModal" tabindex="-1" role="dialog" aria-labelledby="deleteTopicTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteTopicTitle">Delete Topic</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to delete this topic?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <form action="/deleteTopic" method="POST">
+                    <input type="hidden" name="topicId" value="1" />
+                    <button type="submit" class="btn btn-primary">Delete Topic</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </h5>
       </div>
 
       <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordion">
         <div class="card-body">
           Topic Content
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header" id="heading2">
-        <h5 class="mb-0">
-          <button class="btn btn-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-            Topic 2
-          </button>
-        </h5>
-      </div>
-
-      <div id="collapse2" class="collapse" aria-labelledby="heading1" data-parent="#accordion">
-        <div class="card-body">
-          Topic Content
+          <a href="/addResource/topicId">Add Resource</a>
         </div>
       </div>
     </div>
@@ -75,23 +85,26 @@
       <div class="card-header">
         <h5 class="mb-0">
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModalLong">
+          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#addTopicModal">
             Add Topic
           </button>
 
           <!-- Modal -->
-          <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+          <div class="modal fade" id="addTopicModal" tabindex="-1" role="dialog" aria-labelledby="addTopicTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Add Topic</h5>
+                  <h5 class="modal-title" id="addTopicTitle">Add Topic</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
                   <form>
+                    Topic Name:<br>
                     <input type="text" placeholder="Topic Name" class="form-control" required>
+                    <br>Topic Description:<br>
+                    <input type="text" class="form-control">
                   </form>
                 </div>
                 <div class="modal-footer">

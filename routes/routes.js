@@ -69,6 +69,11 @@ module.exports = function (app, passport) {
     app.post('/addSection', function(req, res, next) {
         res.redirect('/student');
     });
+    
+    app.post('/deleteTopic', function(req, res, next) {
+        console.log(req.body.topicId);
+        res.redirect('/teacher/1-1');
+    });
 
     app.get('/student', isStudent, function (req, res, next) {
         res.render('student', { title: studentName });
