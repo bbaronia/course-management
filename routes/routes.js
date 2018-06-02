@@ -1,4 +1,6 @@
 module.exports = function (app, passport) {
+    var filepath = 'C:\\Users\\Brendan\\Documents\\senior-project\\files\\';
+
     var teacherName = 'Teaching';
     var studentName = 'Learning';
     var websiteName = 'Website';
@@ -73,34 +75,73 @@ module.exports = function (app, passport) {
     });
 
     app.get('/courses', function (req, res, next) {
-        res.send([{ name: 'Math 101', id: 1}, { name: 'Math 201', id: 2}, {name: 'Math 301', id: 3}]);
+        var courses = [{ name: 'Math 101', id: 1}, { name: 'Math 201', id: 2}, {name: 'Math 301', id: 3}];
+
+        res.send(courses);
     });
 
     app.get('/sections/:course', function(req, res, next) {
-        console.log(req.params['course']);
         var sections = [{ number: 1, description: 'description', quarter: 'Spring', year: 2018, teacher: 'Mr. Teacher', id: 1}, {number: 2, description: 'description', quarter: 'Spring', year: 2019, teacher: 'Ms. Teacher', id: 2}];
         res.send(sections);
     });
 
+    app.get('/topics/:section', function(req, res, next) {
+        var topics = [{name: 'Topic 1', number: 1, id: 1, text: 'some text'}, {name: 'Topic 2', number: 2, id: 2, text: 'some text'}];
+
+        res.send(topics);
+    });
+
+    app.get('/resources/:topic', function(req, res, next) {
+        var resources = [{name: "name1", id: 1}, {name: "nam2", id: 2}];
+
+        res.send(resources);
+    });
+
     app.get('/student/:course-:section', isStudent, function (req, res, next) {
-        res.render('studentCourse', { title: studentName, courseName: (req.params['course'] + "-" + req.params['section']) });
+        tempCourseName = "Math " + req.params['course'];
+        tempSectionNumber = req.params['section'];
+
+        res.render('studentCourse', { title: studentName, courseName: tempCourseName, sectionNumber: tempSectionNumber,
+            sectionId: req.params['section'] });
     });
 
     app.get('/teacher/:course-:section', isTeacher, function (req, res, next) {
-        res.render('teacherCourse', { title: teacherName, courseName: req.params['course'] + "-" + req.params['section'] });
+        var tempCourseName = "Math " + req.params['course'];
+        var tempSectionNumber = req.params['section'];
+
+        res.render('teacherCourse', { title: teacherName, courseName: tempCourseName, sectionId: req.params['section'],
+            sectionNumber: tempSectionNumber });
+    });
+
+    app.get('/student/resource/:resource', isStudent, function(req, res, next) {
+        var resourceType = 'file';
+
+        if (resourceType === 'video') {
+            res.render('video', {
+                title: studentName,
+                courseName: req.params['course'] + "-" + req.params['section'],
+                topicName: req.params['topic'],
+                videoName: req.params['video']
+            });
+        }
+        else if (resourceType === 'problem') {
+            res.render('problem', {
+                title: studentName,
+                courseName: req.params['course'] + "-" + req.params['section'],
+                topicName: req.params['topic'],
+                problemName: req.params['problem']
+            });
+        }
+        else {
+            res.sendFile(filepath + 'Hotel ERD.pdf');
+        }
+
     });
 
     app.get('/student/:course-:section/:topic/problem=:problem', isStudent, function (req, res, next) {
-        res.render('problem', { title: studentName, courseName: req.params['course'] + "-" + req.params['section'], topicName: req.params['topic'], problemName: req.params['problem'] });
     });
 
     app.get('/student/:course-:section/:topic/video=:video', isStudent, function (req, res, next) {
-        res.render('video', {
-            title: studentName,
-            courseName: req.params['course'] + "-" + req.params['section'],
-            topicName: req.params['topic'],
-            videoName: req.params['video']
-        });
     });
 
     app.get('/logout', function (req, res) {
