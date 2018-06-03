@@ -16,49 +16,39 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE Courses (
-    courseID int auto_increment PRIMARY KEY,
+    courseId int auto_increment PRIMARY KEY,
     courseName varchar(50) NOT NULL,
     owner varchar(50) REFERENCES Users(email)
 );
 
 CREATE TABLE Sections (
-    sectionID int auto_increment PRIMARY KEY,
-    courseID int REFERENCES Courses(courseID),
-    owner varchar(50) REFERENCES Users(email),
-    sectionNumber int NOT NULL,
+    sectionId int auto_increment PRIMARY KEY,
+    courseId int REFERENCES Courses(courseId),
     description varchar(100) NOT NULL,
     quarter ENUM('Spring', 'Summer', 'Fall', 'Winter') NOT NULL,
-    year int NOT NULL
+    year int NOT NULL,
+    passcode int
 );
 
 CREATE TABLE Enrollments (
-    enrollmentID int auto_increment PRIMARY KEY,
-    sectionID int REFERENCES Sections(sectionID),
+    enrollmentId int auto_increment PRIMARY KEY,
+    sectionId int REFERENCES Sections(sectionId),
     email varchar(50) REFERENCES Users(email)
 );
 
 CREATE TABLE CourseTopics (
-    topicID int auto_increment PRIMARY KEY,
-    sectionID int REFERENCES Sections(sectionID),
-    topicNumber int NOT NULL,
+    topicId int auto_increment PRIMARY KEY,
+    sectionId int REFERENCES Sections(sectionId),
     topicName varchar(50) NOT NULL,
     topicDescription varchar(50),
     visible boolean NOT NULL
 );
 
-CREATE TABLE ResourceTypes (
-    resourceTypeID int auto_increment PRIMARY KEY,
-    typeName varchar(50) NOT NULL,
-    typeDescription varchar(50),
-    executableLocation varchar(50) NOT NULL
-);
-
 CREATE TABLE Resources (
-    resourceID int auto_increment PRIMARY KEY,
-    topicID int REFERENCES CourseTopics(topicID),
+    resourceId int auto_increment PRIMARY KEY,
+    topicId int REFERENCES CourseTopics(topicId),
     resourceName varchar(50) NOT NULL,
-    resourceTypeID int REFERENCES ResourceTypes(resourceTypeID),
-    resourceNumber int NOT NULL,
-    fileLocation varchar(50) NOT NULL,
+    resourceType ENUM('problem', 'video', 'file') NOT NULL,
+    resourceLocation varchar(50) NOT NULL,
     visible boolean NOT NULL
 );
