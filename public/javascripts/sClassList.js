@@ -1,5 +1,9 @@
 $(document).ready(function () {
     $.get('/courses', populateCourses);
+
+    $("#addSectionButton").on("click", function() {
+        $("#addSectionForm").submit();
+    });
 });
 
 var populateCourses = function (courses) {

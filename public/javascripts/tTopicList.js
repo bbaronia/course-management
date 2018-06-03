@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    toggleFields();
     var section = $("#course-info").data("section");
 
     $.get('/topics/' + section, populateTopics);
@@ -6,7 +7,30 @@ $(document).ready(function () {
     $("#addTopicButton").on('click', function () {
         $("#addTopicForm").submit();
     });
+
+    $("#selectField").change(function() {
+      toggleFields();
+    });
 });
+
+// this toggles the visibility of other server
+function toggleFields() {
+  if ($("#selectField").val() === "Video"){
+      $("#videoField").show();
+      $("#fileField").hide();
+      $("#problemType").hide();
+  }
+  else if ($("#selectField").val() === "Problem") {
+    $("#videoField").hide();
+    $("#fileField").hide();
+    $("#problemType").show();
+  }
+  else {
+      $("#videoField").hide();
+      $("#problemType").hide();
+      $("#fileField").show();
+  }
+}
 
 var populateTopics = async function (topics) {
     for (topic of topics) {
@@ -18,7 +42,7 @@ var populateTopics = async function (topics) {
             + '</h5></div><div id="collapse' + topic.topicId + '" class="collapse" aria-labelledby="topic'
             + topic.topicId + '" data-parent="#accordion">'
             + '<div class="card-body">' + topic.topicDescription + '<div id="resource' + topic.topicId + '" />'
-            + '<a href="/addResource/topicId">Add Resource</a></div></div>'
+            + '<button class="btn btn-link add-resource" data-topic-id="'+ topic.topicId + '"data-toggle="modal" data-target="#addResourceModal">Add Resource</button></div></div>'
         );
 
         await $.get('/resources/' + topic.topicId, function (data) {
@@ -28,8 +52,14 @@ var populateTopics = async function (topics) {
         $(".delete-topic").on("click", function() {
           $("#deleteTopicHidden").val($(this).data("topic-id"));
         })
-    }
 
+        $(".add-resource").on("click", function() {
+          $("#addResourceHidden").val($(this).data("topic-id"));
+        })
+    }
+    $("#addResourceButton").on('click', function () {
+      $("#addResourceForm").submit();
+  });
 
 }
 

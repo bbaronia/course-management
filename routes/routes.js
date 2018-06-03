@@ -68,8 +68,6 @@ module.exports = function (app, passport) {
         
         sections.push({quarter: req.body.quarter, year: parseInt(req.body.year), description: req.body.description, sectionId: tempSectionId, courseId: parseInt(req.body.courseId)});
 
-        //console.log(sections);
-
         res.redirect('/teacher');
     });
 
@@ -90,17 +88,22 @@ module.exports = function (app, passport) {
         
         courses.push({courseName: req.body.courseName, courseId: tempCourseId, owner: req.user.email});
 
-        //console.log(sections);
-
         res.redirect('/teacher');
     });
 
     app.post('/addSection', function (req, res, next) {
+        tempEnrollmentId = enrollments[enrollments.length - 1].enrollmentId + 1;
+        tempSectionId = parseInt(req.body.sectionId);
+        tempEmail = req.user.email;
+
+        enrollments.push({email: tempEmail, enrollmentId: tempEnrollmentId, sectionId: tempSectionId});
+
         res.redirect('/student');
     });
 
     app.get('/deleteTopic', function (req, res, next) {
         console.log(req.query.topicId);
+
         res.redirect('/teacher/section/' + req.query.sectionId);
     });
 
@@ -109,11 +112,32 @@ module.exports = function (app, passport) {
         var tempTopicName = req.body.topicName;
         var tempTopicDescription = req.body.topicDescription;
 
-        console.log("old: " + courseTopics.length);
         tempTopicId = (courseTopics[courseTopics.length - 1].topicId) + 1;
         
         courseTopics.push({topicName: req.body.topicName, topicId: tempTopicId, topicDescription: tempTopicDescription, sectionId: tempSectionId});
-        console.log("new: " + courseTopics.length);
+
+        res.redirect('/teacher/section/' + tempSectionId);
+    });
+
+    app.post('/addResource', function (req, res, next) {
+        var tempSectionId = parseInt(req.body.sectionId);
+        var tempTopicId = parseInt(req.body.topicId);
+        var tempResourceName = req.body.resourceName;
+        var tempResourceType = req.body.resourceType;
+        var tempResourceLocation = "";
+        if (tempResourceType === "video") {
+            tempResourceLocation = req.body.videoLocation;
+        }
+        else if (tempResourceType === "file") {
+            tempResourceLocation = req.body.fileLocation;
+        }
+        else {
+            tempResourceLocation = 'problem.js';
+        }
+
+        tempResourceId = (resources[resources.length - 1].resourceId) + 1;
+        
+        resources.push({resourceName: tempResourceName, topicId: tempTopicId, resourceType: tempResourceId, resourceLocation: tempResourceLocation, resourceId: tempResourceId});
 
         res.redirect('/teacher/section/' + tempSectionId);
     });
@@ -160,7 +184,6 @@ module.exports = function (app, passport) {
 
         if (req.user.privilegeLevel === 'teacher') {
             for (section of sections) {
-                //console.log(section);
                 if (section.courseId === parseInt(req.params['course'])) {
                     tempSections.push(section);
                 }
@@ -187,10 +210,12 @@ module.exports = function (app, passport) {
         var tempTopics = [];
 
         for (topic of courseTopics) {
-            if (topic.sectionId === parseInt(req.params['section'])) {
+            if (topic.sectionId === parseInt(req.params['section']) && (topic.visible === true || req.user.privilegeLevel === "teacher")) {
                 tempTopics.push(topic);
             }
         }
+
+
 
         res.send(tempTopics);
     });
@@ -199,8 +224,7 @@ module.exports = function (app, passport) {
         var tempResources = [];
 
         for (resource of resources) {
-            if (resource.topicId === parseInt(req.params['topic'])) {
-                //console.log(resource.resourceId);
+            if (resource.topicId === parseInt(req.params['topic']) && (resource.visible === true || req.user.privilegeLevel === "teacher")) {
                 tempResources.push(resource);
             }
         }
@@ -267,13 +291,13 @@ module.exports = function (app, passport) {
 
     app.get('/teacher/resource/:resource', isTeacher, function (req, res, next) {
         var tempTopicName = 'topicName';
-        var tempCourseName = 'courseName' + '-' + 'sectionNumber';
+        var tempCourseName = 'courseName';
         var tempSectionId = '1';
-        var resourceType = 'file';
+        var resourceType = 'video';
         var tempResourceName = 'resourceName';
 
-        if (resourceType === 'ideo') {
-            var tempVideoAddress = 'google.com';
+        if (resourceType === 'video') {
+            var tempVideoAddress = 'https://www.youtube.com/embed/JJOaKaU5IVg';
 
             res.render('teacherVideo', {
                 title: studentName,
@@ -341,7 +365,7 @@ var enrollments = [
 ];
 
 var courseTopics = [
-    { topicId: 1, sectionId: 1, topicName: 'TopicName 1', topicDescription: 'someDescription1', visible: false },
+    { topicId: 1, sectionId: 1, topicName: 'TopicName 1', topicDescription: 'someDescription1', visible: true },
     { topicId: 2, sectionId: 1, topicName: 'TopicName 2', topicDescription: 'someDescription2', visible: false },
     { topicId: 3, sectionId: 1, topicName: 'TopicName 3', topicDescription: 'someDescription3', visible: false },
     { topicId: 4, sectionId: 2, topicName: 'TopicName 4', topicDescription: 'someDescription4', visible: false },
@@ -353,8 +377,8 @@ var courseTopics = [
 ];
 
 var resources = [
-    { resourceId: 1, topicId: 1, resourceName: 'RName 1', resourceType: 'problem', resourceLocation: 'location', visible: false },
-    { resourceId: 2, topicId: 1, resourceName: 'RName 2', resourceType: 'video', resourceLocation: 'location', visible: false },
+    { resourceId: 1, topicId: 1, resourceName: 'RName 1', resourceType: 'problem', resourceLocation: 'location', visible: true },
+    { resourceId: 2, topicId: 1, resourceName: 'RName 2', resourceType: 'video', resourceLocation: 'location', visible: true },
     { resourceId: 3, topicId: 1, resourceName: 'RName 3', resourceType: 'file', resourceLocation: 'location', visible: false },
     { resourceId: 4, topicId: 2, resourceName: 'RName 4', resourceType: 'problem', resourceLocation: 'location', visible: false },
     { resourceId: 5, topicId: 2, resourceName: 'RName 5', resourceType: 'video', resourceLocation: 'location', visible: false },

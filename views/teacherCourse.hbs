@@ -133,6 +133,45 @@
       </div>
     </div>
 
+    <!-- Modal -->
+          <div class="modal fade" id="addResourceModal" tabindex="-1" role="dialog" aria-labelledby="addResourceTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addResourceTitle">Add Topic</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="addResourceForm" action="/addResource" method="POST">
+                    <input type="text" name="resourceName" placeholder="Resource Name" class="form-control" required>
+                    <select id="selectField" name="resourceType">
+                      <option value="Video">Video</option>
+                      <option value="File">File</option>
+                      <option value="Problem">Problem</option>
+                    </select>
+
+                    <input type="url" placeholder="Video URL" id="videoField" name="videoLocation" class="form-control">
+
+                    <input type="file" id="fileField" name="fileLocation" class="form-control">
+
+                    <select id="problemType" name="problemLocation">
+                      <option value="Problem">Graph Problem</option>
+                    </select>
+
+                    <input type="hidden" name="sectionId" value="{{sectionId}}">
+                    <input type="hidden" name="topicId" id="addResourceHidden">
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" id="addResourceButton" class="btn btn-primary">Add Resource</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
   <!-- Bootstrap core JavaScript
     ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
