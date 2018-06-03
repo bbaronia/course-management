@@ -13,7 +13,6 @@ $(document).ready(function () {
     });
 });
 
-// this toggles the visibility of other server
 function toggleFields() {
   if ($("#selectField").val() === "Video"){
       $("#videoField").show();
@@ -70,43 +69,3 @@ var populateResources = function (resources, topic) {
         );
     });
 }
-
-{/* <div class="card">
-<div class="card-header" id="heading1">
-  <h5 class="mb-0">
-    <button class="btn btn-link" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
-      Topic 1
-    </button>
-    <button class="btn btn-link text-danger" data-toggle="modal" data-target="#deleteTopicModal">Delete Topic</button>
-    <div class="modal fade" id="deleteTopicModal" tabindex="-1" role="dialog" aria-labelledby="deleteTopicTitle" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="deleteTopicTitle">Delete Topic</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            Are you sure you want to delete this topic?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <form action="/deleteTopic" method="POST">
-              <input type="hidden" name="topicId" value="1" />
-              <button type="submit" class="btn btn-primary">Delete Topic</button>
-              </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </h5>
-</div>
-
-<div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordion">
-  <div class="card-body">
-    Topic Content
-    <a href="/addResource/topicId">Add Resource</a>
-  </div>
-</div>
-</div> */}
