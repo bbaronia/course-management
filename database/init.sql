@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS Resources;
-DROP TABLE IF EXISTS CourseTopics;
+DROP TABLE IF EXISTS Topics;
 DROP TABLE IF EXISTS ResourceTypes;
 DROP TABLE IF EXISTS Enrollments;
 DROP TABLE IF EXISTS Sections;
@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users (
     id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    email varchar(50) NOT NULL,
+    email varchar(50) NOT NULL UNIQUE,
     firstName varchar(50) NOT NULL,
     lastName varchar(50) NOT NULL,
     passwd varchar(60) NOT NULL,
@@ -18,37 +18,43 @@ CREATE TABLE Users (
 CREATE TABLE Courses (
     courseId int auto_increment PRIMARY KEY,
     courseName varchar(50) NOT NULL,
-    owner varchar(50) REFERENCES Users(email)
+    owner varchar(50),
+    FOREIGN KEY (owner) REFERENCES Users(email) ON DELETE CASCADE
 );
 
 CREATE TABLE Sections (
     sectionId int auto_increment PRIMARY KEY,
-    courseId int REFERENCES Courses(courseId),
+    courseId int,
     description varchar(100) NOT NULL,
     quarter ENUM('Spring', 'Summer', 'Fall', 'Winter') NOT NULL,
     year int NOT NULL,
-    passcode varchar(6)
+    passcode varchar(6),
+    FOREIGN KEY (courseId) REFERENCES Courses(courseId) ON DELETE CASCADE
 );
 
 CREATE TABLE Enrollments (
     enrollmentId int auto_increment PRIMARY KEY,
-    sectionId int REFERENCES Sections(sectionId),
-    email varchar(50) REFERENCES Users(email)
+    sectionId int,
+    email varchar(50),
+    FOREIGN KEY (sectionId) REFERENCES Sections(sectionId) ON DELETE CASCADE,
+    FOREIGN KEY (email) REFERENCES Users(email) ON DELETE CASCADE
 );
 
-CREATE TABLE CourseTopics (
+CREATE TABLE Topics (
     topicId int auto_increment PRIMARY KEY,
-    sectionId int REFERENCES Sections(sectionId),
+    sectionId int,
     topicName varchar(50) NOT NULL,
     topicDescription varchar(100),
-    visible boolean NOT NULL
+    visible boolean NOT NULL,
+    FOREIGN KEY (sectionId) REFERENCES Sections(sectionId) ON DELETE CASCADE
 );
 
 CREATE TABLE Resources (
     resourceId int auto_increment PRIMARY KEY,
-    topicId int REFERENCES CourseTopics(topicId),
+    topicId int,
     resourceName varchar(50) NOT NULL,
     resourceType ENUM('problem', 'video', 'file') NOT NULL,
     resourceLocation varchar(50) NOT NULL,
-    visible boolean NOT NULL
+    visible boolean NOT NULL,
+    FOREIGN KEY (topicId) REFERENCES Topics(topicId) ON DELETE CASCADE
 );

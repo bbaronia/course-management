@@ -22,15 +22,20 @@
       <!--<img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">-->
       <h1 class="h1 mb-3 font-weight-normal">{{title}}</h1>
       <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+      <select name="privilegeLevel" class="form-control pb-1">
+        <option value="teacher">Teacher</option>
+        <option value="student">Student</option>
+      </select>
       <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+      <input type="email" name="username" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
       <label for="inputFirstName" class="sr-only">First Name</label>
-      <input type="text" name="firstName" id="inputFirstName" class="form-control" placeholder="First name" required autofocus>
+      <input pattern="^[a-zA-Z]+$" oninvalid="this.setCustomValidity('Name can contain only letters')" onvalid="this.setCustomValidity('')" name="firstName" id="inputFirstName" class="form-control" placeholder="First name" required autofocus>
       <label for="inputLastName" class="sr-only">Last Name</label>
-      <input type="text" name="lastName" id="inputLastName" class="form-control" placeholder="Last name" required autofocus>
+      <input pattern="^[a-zA-Z]+$" oninvalid="this.setCustomValidity('Name can contain only letters')" onvalid="this.setCustomValidity('')" name="lastName" id="inputLastName" class="form-control" placeholder="Last name" required autofocus>
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+      <a class="btn btn-lg btn-primary btn-block" href="/">Sign In</a>
     </form>
   </body>
 </html>

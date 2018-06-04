@@ -47,8 +47,7 @@ var populateSections = function (sections, course) {
             + '"media-heading"><a href="/section/' + section.sectionId
             + '">' + course.courseName + '-' + section.sectionId
             + '</a></div></div><div class="col-2 media-body">' + section.quarter
-            + ' ' + section.year + '</div><div class="col-2 media-body">'
-            + section.teacher + '</div><div class="col-6 media-body">'
+            + ' ' + section.year + '</div><div class="col-6 media-body">'
             + section.description + '</div></div>'
         );
     });

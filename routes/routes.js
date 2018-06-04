@@ -26,7 +26,7 @@ module.exports = function (app, passport) {
     //connection.query('USE ' + dbconfig.database);
 
     /* GET home page. */
-    app.get('/', function (req, res, next) {
+    app.get('/', function (req, res) {
         if (req.user/* && req.user.privilegeLevel === 'student'*/)
             res.redirect('/home');
         //if (req.user && req.user.privilegeLevel === 'teacher')
@@ -56,11 +56,24 @@ module.exports = function (app, passport) {
         res.render('signup', { title: websiteName, message: req.flash('signupMessage') });
     });
 
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/home',
-        failureRedirect: '/signup',
-        failureFlash: true
-    }));
+    app.post('/signup', function (req, res, next) {
+        //sign up here
+        dbFunctions.createUser(req.body.username, req.body.firstName, req.body.lastName, req.body.password, req.body.privilegeLevel)
+        next()
+    },
+        passport.authenticate('local-login', {
+            successRedirect: '/loggedin',
+            failureRedirect: '/signup',
+            failureFlash: true
+        }), function (req, res) {
+
+            if (req.body.remember) {
+                req.session.cookie.maxAge = 1000 * 60 * 3;
+            } else {
+                req.session.cookie.expires = false;
+            }
+            res.redirect('/');
+        });
 
     app.get('/loggedin', function (req, res) {
         if (req.user.privilegeLevel)
@@ -71,7 +84,7 @@ module.exports = function (app, passport) {
             res.redirect('/login');
     });
 
-    app.get('/home', function (req, res, next) {
+    app.get('/home', function (req, res) {
         if (!req.user) {
             res.redirect('/')
         }
@@ -87,35 +100,40 @@ module.exports = function (app, passport) {
         }
     });
 
-    app.post('/createSection', isTeacher, function (req, res, next) {
-        tempSectionId = (sections[sections.length - 1].sectionId) + 1;
+    app.post('/createSection', isTeacher, function (req, res) {
+        //tempSectionId = (sections[sections.length - 1].sectionId) + 1;
 
-        sections.push({ quarter: req.body.quarter, year: parseInt(req.body.year), description: req.body.description, sectionId: tempSectionId, courseId: parseInt(req.body.courseId), passcode: req.body.passcode });
+        //sections.push({ quarter: req.body.quarter, year: parseInt(req.body.year), description: req.body.description, sectionId: tempSectionId, courseId: parseInt(req.body.courseId), passcode: req.body.passcode });
 
-        res.redirect('/home');
+        dbFunctions.createSection(req.user.email, req.body.quarter, parseInt(req.body.year), req.body.description, parseInt(req.body.courseId), req.body.passcode, function () {
+            res.redirect('/home');
+        })
     });
 
-    app.get('/deleteCourse', isTeacher, function (req, res, next) {
-        console.log(req.query.courseId);
-
-        res.redirect('/home');
+    app.get('/deleteCourse', isTeacher, function (req, res) {
+        dbFunctions.deleteCourse(req.user.email, req.query.courseId, function () {
+            res.redirect('/home');
+        })
     });
 
-    app.get('/deleteSection', isTeacher, function (req, res, next) {
+    app.get('/deleteSection', isTeacher, function (req, res) {
         console.log(req.query.sectionId);
 
-        res.redirect('/home');
+        dbFunctions.deleteSection(req.user.email, parseInt(req.query.sectionId), function () {
+            res.redirect('/home');
+        });
     });
 
-    app.post('/createCourse', isTeacher, function (req, res, next) {
-        tempCourseId = (courses[courses.length - 1].courseId) + 1;
+    app.post('/createCourse', isTeacher, function (req, res) {
+        //tempCourseId = (courses[courses.length - 1].courseId) + 1;
 
-        courses.push({ courseName: req.body.courseName, courseId: tempCourseId, owner: req.user.email });
-
-        res.redirect('/home');
+        //courses.push({ courseName: req.body.courseName, courseId: tempCourseId, owner: req.user.email });
+        dbFunctions.createCourse(req.body.courseName, req.user.email, function () {
+            res.redirect('/home');
+        });
     });
 
-    app.post("/hideTopic", isTeacher, function (req, res, next) {
+    app.post("/hideTopic", isTeacher, function (req, res) {
         console.log(req.body);
 
         for (counter = 0; counter < courseTopics.length; counter++) {
@@ -130,7 +148,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    app.post("/hideResource", isTeacher, function (req, res, next) {
+    app.post("/hideResource", isTeacher, function (req, res) {
         console.log(req.body);
 
         for (counter = 0; counter < resources.length; counter++) {
@@ -145,7 +163,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    app.post('/addSection', function (req, res, next) {
+    app.post('/addSection', function (req, res) {
         console.log(req.body);
         if (req.body.passcode) {
             console.log("we have a passcode");
@@ -161,19 +179,19 @@ module.exports = function (app, passport) {
         res.redirect('/home');
     });
 
-    app.get('/deleteTopic', function (req, res, next) {
+    app.get('/deleteTopic', function (req, res) {
         console.log(req.query.topicId);
 
         res.redirect('/section/' + req.query.sectionId);
     });
 
-    app.get('/deleteResource', function (req, res, next) {
+    app.get('/deleteResource', function (req, res) {
         console.log(req.query.resourceId);
 
         res.redirect('/section/' + req.query.sectionId);
     });
 
-    app.post('/addTopic', function (req, res, next) {
+    app.post('/addTopic', function (req, res) {
         var tempSectionId = parseInt(req.body.sectionId);
         var tempTopicName = req.body.topicName;
         var tempTopicDescription = req.body.topicDescription;
@@ -185,7 +203,7 @@ module.exports = function (app, passport) {
         res.redirect('/section/' + tempSectionId);
     });
 
-    app.post('/addResource', upload.single('fileLocation'), function (req, res, next) {
+    app.post('/addResource', upload.single('fileLocation'), function (req, res) {
         //console.log(req.body);
         //console.log(req.file.filename);
 
@@ -212,8 +230,12 @@ module.exports = function (app, passport) {
         res.redirect('/section/' + req.body.sectionId);
     });
 
-    app.get('/courses', function (req, res, next) {
-        var tempCourses = [];
+    app.get('/courses', function (req, res) {
+        dbFunctions.getCourses(req.user.email, function (courses) {
+            console.log(courses[1]);
+            res.send(courses);
+        });
+        /*var tempCourses = [];
 
         if (req.user.privilegeLevel === 'teacher') {
             for (course of courses) {
@@ -238,15 +260,16 @@ module.exports = function (app, passport) {
                     }
                 }
             }
-        }
-
-        res.send(tempCourses);
+        }*/
     });
 
-    app.get('/sections/:course', function (req, res, next) {
-        var tempSections = [];
+    app.get('/sections/:course', function (req, res) {
+        dbFunctions.getSections(parseInt(req.params['course']), req.user.email, function (sections) {
+            res.send(sections);
+        });
+        //var tempSections = [];
 
-        if (req.user.privilegeLevel === 'teacher') {
+        /*if (req.user.privilegeLevel === 'teacher') {
             for (section of sections) {
                 if (section.courseId === parseInt(req.params['course'])) {
                     tempSections.push(section);
@@ -265,116 +288,123 @@ module.exports = function (app, passport) {
                     }
                 }
             }
-        }
-
-        res.send(tempSections);
+        }*/
     });
 
-    app.get('/topics/:section', function (req, res, next) {
-        var tempTopics = [];
+    app.get('/topics/:section', function (req, res) {
+        /*var tempTopics = [];
 
         for (topic of courseTopics) {
             if (topic.sectionId === parseInt(req.params['section']) && (topic.visible === true || req.user.privilegeLevel === "teacher")) {
                 tempTopics.push(topic);
             }
-        }
-
-
-
-        res.send(tempTopics);
+        }*/
+        dbFunctions.getTopics(parseInt(req.params['section']), req.user.email, function (topics) {
+            res.send(topics);
+        });
     });
 
-    app.get('/resources/:topic', function (req, res, next) {
-        var tempResources = [];
+    app.get('/resources/:topic', function (req, res) {
+        /*var tempResources = [];
 
         for (resource of resources) {
             if (resource.topicId === parseInt(req.params['topic']) && (resource.visible === true || req.user.privilegeLevel === "teacher")) {
                 tempResources.push(resource);
             }
-        }
-
-        res.send(tempResources);
+        }*/
+        dbFunctions.getResources(parseInt(req.params['topic']), req.user.email, function (resources) {
+            res.send(resources);
+        });
     });
 
-    app.get('/section/:section', function (req, res, next) {
-        var tempCourseName = "Math " + '101';
+    app.get('/section/:section', function (req, res) {
         if (!req.user) {
             console.log("user not found");
             res.redirect('/')
         }
-        else if (req.user.privilegeLevel === 'student') {
-            res.render('studentCourse', {
-                title: studentName, courseName: tempCourseName,
-                sectionId: req.params['section']
-            });
-        }
-        else if (req.user.privilegeLevel === 'teacher') {
-            res.render('teacherCourse', {
-                title: teacherName,
-                courseName: tempCourseName,
-                sectionId: req.params['section']
+        else {
+            dbFunctions.getSection(parseInt(req.params['section']), req.user.email, function (courses) {
+                var tempCourseName = courses[0].courseName;
+                if (req.user.privilegeLevel === 'student') {
+                    res.render('studentCourse', {
+                        title: studentName, courseName: tempCourseName,
+                        sectionId: req.params['section']
+                    });
+                }
+                else if (req.user.privilegeLevel === 'teacher') {
+                    res.render('teacherCourse', {
+                        title: teacherName,
+                        courseName: tempCourseName,
+                        sectionId: req.params['section']
+                    });
+                }
             });
         }
     });
 
-    app.get('/resource/:resource', function (req, res, next) {
-        var tempResource;
-        var tempTopic;
-        var tempCourse;
-        var tempSection;
-
-        for (resource of resources) {
-            if (resource.resourceId === parseInt(req.params['resource'])) {
-                tempResource = resource;
-            }
-        }
-        for (topic of courseTopics) {
-            if (tempResource.topicId === topic.topicId) {
-                tempTopic = topic;
-            }
-        }
-        for (section of sections) {
-            if (tempTopic.sectionId === section.sectionId) {
-                tempSection = section;
-            }
-        }
-        for (course of courses) {
-            if (tempSection.courseId === course.courseId) {
-                tempCourse = course;
-            }
-        }
-        var tempCourseName = tempCourse.courseName + '-' + tempSection.sectionId;
-        var tempTopicName = tempTopic.topicName;
-        var tempSectionId = tempSection.sectionId;
-
+    app.get('/resource/:resource', function (req, res) {
         if (!req.user) {
             res.redirect('/')
         }
         else {
+            dbFunctions.getResource(parseInt(req.params['resource']), req.user.email, function (data) {
+                console.log(data[0]);
+                /*for (resource of resources) {
+                    if (resource.resourceId === parseInt(req.params['resource'])) {
+                        tempResource = resource;
+                    }
+                }
+                for (topic of courseTopics) {
+                    if (tempResource.topicId === topic.topicId) {
+                        tempTopic = topic;
+                    }
+                }
+                for (section of sections) {
+                    if (tempTopic.sectionId === section.sectionId) {
+                        tempSection = section;
+                    }
+                }
+                for (course of courses) {
+                    if (tempSection.courseId === course.courseId) {
+                        tempCourse = course;
+                    }
+                }
+                var tempCourseName = tempCourse.courseName + '-' + tempSection.sectionId;
+                var tempTopicName = tempTopic.topicName;
+                var tempSectionId = tempSection.sectionId;*/
+                var tempCourseName = data[0].courseName + '-' + data[0].sectionId;
+                var tempTopicName = data[0].topicName;
+                var tempSectionId = data[0].sectionId;
+                var tempResourceName = data[0].resourceName;
+                var tempResourceLocation = data[0].resourceLocation;
+                var tempResourceType = data[0].resourceType;
 
-            if (tempResource.resourceType === 'video') {
-                res.render('video', {
-                    title: studentName,
-                    courseName: tempCourseName,
-                    topicName: tempTopicName,
-                    sectionId: tempSectionId,
-                    videoName: tempResource.resourceName,
-                    videoAddress: tempResource.resourceLocation
-                });
-            }
-            else if (tempResource.resourceType === 'problem') {
-                res.render('problem', {
-                    title: studentName,
-                    courseName: tempCourseName,
-                    topicName: tempTopicName,
-                    sectionId: tempSectionId,
-                    problemName: tempResource.resourceName,
-                    problemJs: tempResource.resourceLocation
-                });
-            }
-            else {
-                res.sendFile(filepath + tempResource.resourceLocation);
-            }
+
+                if (tempResourceType === 'video') {
+                    res.render('video', {
+                        title: studentName,
+                        courseName: tempCourseName,
+                        topicName: tempTopicName,
+                        sectionId: tempSectionId,
+                        videoName: tempResourceName,
+                        videoAddress: tempResourceLocation
+                    });
+                }
+                else if (tempResourceType === 'problem') {
+                    res.render('problem', {
+                        title: studentName,
+                        courseName: tempCourseName,
+                        topicName: tempTopicName,
+                        sectionId: tempSectionId,
+                        problemName: tempResourceName,
+                        problemJs: tempResourceLocation
+                    });
+                }
+                else {
+                    res.sendFile(filepath + tempResourceLocation);
+                }
+
+            });
         }
     });
 

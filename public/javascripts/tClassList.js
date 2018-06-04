@@ -78,7 +78,7 @@ var populateCourses = async function (courses) {
 
 
 
-            + '<div class="row"><div class="col-2"><button type="button" class="btn btn-outline-danger" data-course-id="' + course.courseId + '" data-toggle="modal" data-target="#deleteCourseModal">Delete Course</button></div>'
+            + '<div class="row"><div class="col-2"><button type="button" class="btn btn-outline-danger delete-course" data-course-id="' + course.courseId + '" data-toggle="modal" data-target="#deleteCourseModal">Delete Course</button></div>'
             + '<button type="button" class="btn btn-link add-section" data-course-id="' + course.courseId + '" data-course-name="' + course.courseName + '" data-toggle="modal" data-target="#addSectionModal">'
             + 'Add Section'
             + '</button>'
