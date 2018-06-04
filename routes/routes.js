@@ -25,7 +25,7 @@ module.exports = function (app, passport) {
     app.get('/', function (req, res) {
         if (req.user)
             res.redirect('/home');
-        res.render('index', { title: websiteName });
+        res.render('login', { title: websiteName });
     });
 
     app.get('/login', function (req, res, next) {
