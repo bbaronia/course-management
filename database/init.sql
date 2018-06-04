@@ -54,7 +54,7 @@ CREATE TABLE Resources (
     topicId int,
     resourceName varchar(50) NOT NULL,
     resourceType ENUM('problem', 'video', 'file') NOT NULL,
-    resourceLocation varchar(50) NOT NULL,
+    resourceLocation varchar(100) NOT NULL,
     visible boolean NOT NULL,
     FOREIGN KEY (topicId) REFERENCES Topics(topicId) ON DELETE CASCADE
 );

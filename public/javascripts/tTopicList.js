@@ -161,7 +161,7 @@ var populateResources = function (resources, topic) {
         $('#resource' + topic).before(
             '<div class="row border-bottom"><div class="col-8"><a class ="btn btn-link" href="/resource/' + resource.resourceId + '">' + resource.resourceName + '</a></div>'
             + '<div class="col-4"><button class="btn btn-link text-danger delete-resource float-right" data-resource-id="' + resource.resourceId + '"data-toggle="modal" data-target="#deleteResourceModal"'
-            + '>Delete Topic</button>'
+            + '>Delete Resource</button>'
             + '<button class="btn float-right btn-link hide-resource" data-resource-id="' + resource.resourceId
             + '">' + getButtonVal(resource.visible, false) + '</button></div></div><div id="resource' + topic + '" />'
         );
