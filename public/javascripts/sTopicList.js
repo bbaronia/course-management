@@ -23,7 +23,7 @@ var populateTopics = async function (topics) {
 var populateResources = function (resources, topic) {
     resources.forEach(resource => {
         $('#resource' + topic).before(
-            '<br><a href="/student/resource/' + resource.resourceId + '">' + resource.resourceName + '</a><div id="resource' + topic + '" />'
+            '<div class="row"><div class="col-12"><a class="btn btn-link" href="/resource/' + resource.resourceId + '">' + resource.resourceName + '</a></div></div><div id="resource' + topic + '" />'
         );
     });
 }

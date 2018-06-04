@@ -12,7 +12,7 @@ CREATE TABLE Users (
     firstName varchar(50) NOT NULL,
     lastName varchar(50) NOT NULL,
     passwd varchar(60) NOT NULL,
-    privilegeLevel ENUM('admin', 'teacher', 'student') NOT NULL
+    privilegeLevel ENUM('teacher', 'student') NOT NULL
 );
 
 CREATE TABLE Courses (
@@ -27,7 +27,7 @@ CREATE TABLE Sections (
     description varchar(100) NOT NULL,
     quarter ENUM('Spring', 'Summer', 'Fall', 'Winter') NOT NULL,
     year int NOT NULL,
-    passcode int
+    passcode varchar(6)
 );
 
 CREATE TABLE Enrollments (
@@ -40,7 +40,7 @@ CREATE TABLE CourseTopics (
     topicId int auto_increment PRIMARY KEY,
     sectionId int REFERENCES Sections(sectionId),
     topicName varchar(50) NOT NULL,
-    topicDescription varchar(50),
+    topicDescription varchar(100),
     visible boolean NOT NULL
 );
 

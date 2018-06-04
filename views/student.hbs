@@ -25,7 +25,7 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/student">Home</a>
+          <a class="nav-link" href="/home">Home</a>
         </li>
         <li class="nav-item">
           <button type="button" class="btn btn-link nav-link" data-toggle="modal" data-target="#exampleModalLong">Add Course</button>
@@ -52,8 +52,8 @@
         </div>
         <div class="modal-body">
           <form action="/addSection" method="POST" id="addSectionForm">
-            <input type="number" placeholder="Section Number" name="sectionId" class="form-control" required>
-            <input type="number" placeholder="Section Passcode" name="sectionPasscode" class="form-control" required>
+            <input type="text" pattern="[0-9]{1, }" placeholder="Section Number" name="sectionId" class="form-control" required>
+            <input type="text" pattern="[0-9]{4, 6}" placeholder="Section Passcode" name="passcode" class="form-control" required>
           </form>
         </div>
         <div class="modal-footer">
@@ -71,6 +71,7 @@
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
     <script src="javascripts/sClassList.js"></script>
     <script src="javascripts/addSection.js"></script>
 </body>
