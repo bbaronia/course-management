@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS Resources;
+DROP TABLE IF EXISTS TopicMap;
 DROP TABLE IF EXISTS Topics;
 DROP TABLE IF EXISTS ResourceTypes;
 DROP TABLE IF EXISTS Enrollments;
@@ -47,6 +48,14 @@ CREATE TABLE Topics (
     topicDescription varchar(100),
     visible boolean NOT NULL,
     FOREIGN KEY (sectionId) REFERENCES Sections(sectionId) ON DELETE CASCADE
+);
+
+CREATE TABLE TopicMap (
+    mapId int auto_increment PRIMARY KEY,
+    sectionId int,
+    topicId int,
+    FOREIGN KEY (sectionId) REFERENCES Sections(sectionId) ON DELETE CASCADE,
+    FOREIGN KEY (topicId) REFERENCES Topics(topicId) ON DELETE CASCADE
 );
 
 CREATE TABLE Resources (

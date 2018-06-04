@@ -58,6 +58,30 @@ INSERT INTO Topics(sectionId, topicName, topicDescription, visible) VALUES
 INSERT INTO Topics(sectionId, topicName, topicDescription, visible) VALUES
 (4, 'Lines', 'Another demo topic for Math 101-4', true);
 
+INSERT INTO TopicMap(sectionId, topicId) VALUES
+(1, 1);
+
+INSERT INTO TopicMap(sectionId, topicId) VALUES
+(1, 2);
+
+INSERT INTO TopicMap(sectionId, topicId) VALUES
+(2, 3);
+
+INSERT INTO TopicMap(sectionId, topicId) VALUES
+(2, 4);
+
+INSERT INTO TopicMap(sectionId, topicId) VALUES
+(3, 5);
+
+INSERT INTO TopicMap(sectionId, topicId) VALUES
+(3, 6);
+
+INSERT INTO TopicMap(sectionId, topicId) VALUES
+(4, 7);
+
+INSERT INTO TopicMap(sectionId, topicId) VALUES
+(4, 8);
+
 INSERT INTO Resources(topicId, resourceName, resourceType, resourceLocation, visible) VALUES
 (1, 'Graph Video', 'video', 'https://www.youtube.com/embed/86NwKBcOlow', true);
 
