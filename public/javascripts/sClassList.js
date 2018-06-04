@@ -1,10 +1,14 @@
+//Wait for page to load
 $(document).ready(function () {
+    //Grab course info from server
     $.get('/courses', populateCourses);
 
+    //Link buttton to form for submit
     $("#addSectionButton").on("click", function() {
         $("#addSectionForm").submit();
     });
 
+    //Validate data before sending
     $("#addSectionForm").validate({
         rules: {
           sectionId: {
@@ -32,16 +36,20 @@ $(document).ready(function () {
       });
 });
 
+//Insert courses
 var populateCourses = function (courses) {
     courses.forEach(course => {
+        //Get sections for each course from server
         $.get("/sections/" + course.courseId, function (data) {
             populateSections(data, course);
         });
     });
 }
 
+//Insert sections
 var populateSections = function (sections, course) {
     sections.forEach(section => {
+        //For each section, insert following HTML
         $('#course-list').before(
             '<div class="row border-bottom"><div class="col-2"><div class='
             + '"media-heading"><a href="/section/' + section.sectionId
