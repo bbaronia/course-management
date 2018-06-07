@@ -44,6 +44,9 @@ $(document).ready(async function () {
     + '<canvas id="graph" width="400" height="400" style="background-color:black">'
     + '</canvas></div></div></div>'
 
+    $("#problem-text").before('Graph the equation'
+    + '<code> y ' + eqY0Sign + ' ' + Math.abs(eqY0) + ' = ' + eqM + '(x '
+    + eqX0Sign + ' ' + Math.abs(eqX0) + ')</code>');
     //Put HTML on page, wait until done
     await $("#step-list").before(steps);
 

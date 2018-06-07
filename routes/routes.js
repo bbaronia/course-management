@@ -1,6 +1,6 @@
 module.exports = function (app, passport) {
     //Set filepath to load files from
-    var filepath = 'C:\\Users\\Brendan\\Documents\\senior-project\\files\\';
+    var filepath = '/home/pi/senior-project/files/';
 
     //Load requirements
     var multer = require('multer');
