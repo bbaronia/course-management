@@ -92,9 +92,6 @@ INSERT INTO Resources(topicId, resourceName, resourceType, resourceLocation, vis
 (2, 'Line Video', 'video', 'https://www.youtube.com/embed/woUQ9LLaees', true);
 
 INSERT INTO Resources(topicId, resourceName, resourceType, resourceLocation, visible) VALUES
-(2, 'Line Notes', 'file', 'Graph Notes.pdf', false);
-
-INSERT INTO Resources(topicId, resourceName, resourceType, resourceLocation, visible) VALUES
 (3, 'Graph Video', 'video', 'https://www.youtube.com/embed/36v2EXZRzUE', true);
 
 INSERT INTO Resources(topicId, resourceName, resourceType, resourceLocation, visible) VALUES
@@ -102,6 +99,3 @@ INSERT INTO Resources(topicId, resourceName, resourceType, resourceLocation, vis
 
 INSERT INTO Resources(topicId, resourceName, resourceType, resourceLocation, visible) VALUES
 (4, 'Line Video', 'video', 'https://www.youtube.com/embed/uk7gS3cZVp4', true);
-
-INSERT INTO Resources(topicId, resourceName, resourceType, resourceLocation, visible) VALUES
-(4, 'Line Notes', 'file', 'Graph Notes 2.pdf', false);
